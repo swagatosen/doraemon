@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var modelEvents = mongoose.Schema(
+var event = mongoose.Schema(
 {
 	eventName: {
 		type: String,
@@ -27,4 +27,29 @@ var modelEvents = mongoose.Schema(
 });
 
 
-module.exports = MovieSchema;
+module.exports = mongoose.model('Event', event);
+
+module.exports.CreateEvent = function(eventDetails, callback) {
+	try {
+
+	}
+}
+
+function ValidateEventDetails(event) {
+	var valid = true;
+	try {
+			if (event.eventName.trim() == "") {
+				valid = false;
+
+			}
+
+			else if (isNaN(event.eventDateTime.getTime())) {
+				valid = false;
+			}
+
+			else if (isNaN(parseInt(quota) && quota >= 0)) {
+				valid = false;
+			}
+		}
+	}
+}
