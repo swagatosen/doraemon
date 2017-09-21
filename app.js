@@ -19,11 +19,31 @@ app.use(express.static(path.join(__dirname, 'client')));
 
 // middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // define route handlers
 app.use('/', home);
 app.use('/events', events);
+
+// error handling
+if (app.get('env') === 'development') {
+
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		})
+	});
+} else {
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: {}
+		});
+	});
+}
 
 app.listen(portNum, function() {
 	console.log('Server started on port ' + portNum);
