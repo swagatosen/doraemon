@@ -22,8 +22,25 @@ var event = mongoose.Schema(
 		userid: [Schema.Types.ObjectId],
 		signupTime: Date,
 		status: String
+	}, 
+
+	eventLocation: {
+		type: String
 	}
 
+	eventCategory: {
+		category1: {
+		type: String
+		},
+
+		category2: {
+			type: String
+		},
+
+		category3: {
+			type: String
+		}
+	}
 });
 
 
@@ -51,15 +68,12 @@ module.exports.CreateEvent = function(eventDetails, callback) {
 					return callback(result);
 				}
 				var result = {
-					result: 'success'
+					result: 'success',
 					message: 'event created successfully.'
 				}
 				return callback(result);
 			})
-
 		}
-
-
 	}
 }
 
@@ -78,7 +92,7 @@ module.exports.UpdateEvent = function(eventId, eventDetails, callback) {
 							return callback(result);
 						}
 						var result = {
-							result: 'success'
+							result: 'success',
 							message: 'event updated successfully.'
 						}
 						return callback(result);
@@ -88,6 +102,27 @@ module.exports.UpdateEvent = function(eventId, eventDetails, callback) {
 		})
 	}
 }
+
+module.exports.GetEventList = function(filters) {
+	Event.find(filters).exec()
+
+	.then(function(events) {
+		console.log(events);
+		return events;
+	})
+
+	.catch(function(err) {
+		console.log(err);
+	});
+}
+
+module.exports.GetEvent = function (eventId) {
+
+}
+
+function CheckIfEventExists = new Promise (function (eventId) {
+
+})
 
 function ValidateEventDetails(event) {
 	var valid = true;
