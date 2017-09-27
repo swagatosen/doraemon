@@ -116,13 +116,71 @@ module.exports.GetEventList = function(filters) {
 	});
 }
 
-module.exports.GetEvent = function (eventId) {
+module.exports.GetEvent = function (eventId, callback) {
+	if (callback) {
+		Event.findOne({_id: eventId}, function(err, event) {
+			if (err){
+				console.error(err);
+				return callback(err, null);
+			}
 
+			// no errors.
+
+			return callback(null, event)
+		})
+	}
+
+	else {
+		return new Promise(function(resolve, reject) {
+			Event.findOne({_id: eventId}, function(err, event) {
+				if (err){
+					console.error(err);
+					return reject(err);
+				}
+
+				// no errors.
+
+				return resolve(event)
+			})
+		})
+	}
 }
 
-function CheckIfEventExists = new Promise (function (eventId) {
+function CheckIfEventExists(eventId, callback) {
+	if (callback) {
+		Event.findOne({_id: eventId}, 'eventName', function(err, event) {
+			if (err) {
+				console.error(err);
+				return callback(err, null);
+			}
 
-})
+			// no errors. check if event exists
+			var found = false;
+			if (event == null) {}
+			else found = true;
+
+			return callback(null, found);
+		}
+	}
+
+	else {
+		return new Promise(function(resolve, reject) {
+			Event.findOne({_id: eventId}, function(err, event) {
+				if (err){
+					console.error(err);
+					return reject(err);
+				}
+
+				// no errors. check if event exists
+				var found = false;
+				if (event == null) {}
+				else found = true;
+
+				return resolve(found);
+			})
+		})
+	}
+}
 
 function ValidateEventDetails(event) {
 	var valid = true;
